@@ -42,11 +42,9 @@ def handle_event (event):
     global THEME_ID
     key = event.ScanCode
     print(event.ScanCode)
-    if (key == 91) or (key == 66):
-        return
-    if key == 120:
+    if key == 53:
         sys.exit(0)
-    if key == 27:
+    if key == 116:
         THEME_ID += 1
     if config.THEME.get(THEME_ID % len(config.THEME)) is None:
         return
