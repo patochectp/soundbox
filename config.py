@@ -1,8 +1,13 @@
 PLAYER = 'omxplayer'
 SOUND_DIRECTORY = '/home/pi/soundbox/sound/'
 THEME = {
-    0: 'default',
-    1: 'codir'}
+    0: 'Default',
+    1: 'Grooming'
+    2: 'Guillaume_Crouigneau',
+    3: 'Hodor',
+    4: 'Pause_cafe',
+    5: 'Weekly'
+ }
 CATEGORY = ['calotte', 'chut', 'clap_de_fin', 'echec', 'like', 'succes', 'wtf']
 KEY_CATEGORY_MAPPING = {
     12: 'calotte', #3

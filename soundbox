@@ -12,7 +12,7 @@
 
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 NAME=soundbox
-DAEMON="/home/xiaolong/dev/soundbox/soundbox.py"
+DAEMON="/home/pi/soundbox/soundbox.py"
 DAEMON_OPTS=""
 USER=root
 GROUP=root
