@@ -4,6 +4,7 @@ import os
 import random
 import subprocess
 import config
+import datetime
 
 class _Getch:
     """Gets a single character from standard input.  Does not echo to the
@@ -43,10 +44,9 @@ class _GetchWindows:
 
 
 getch = _Getch()
+THEME = 'default'
 
 def play_sound(key):
-
-    THEME = 'default'
     category = config.KEY_CATEGORY_MAPPING.get(key)
     if category:
         path = os.path.join(config.SOUND_DIRECTORY, THEME, category)
@@ -64,7 +64,12 @@ class KeyEventThread(threading.Thread):
         while keep_going:
             key = getch()
             if key == 'x':
-                keep_going = False
+                break
+            if config.KEY_CATEGORY_MAPPING.get(key) is None:
+                continue 
+	    with open("stat.csv", "a") as myfile:
+    	        myfile.write("{datetime}, {theme}, {category}\n".format(datetime=datetime.datetime.now(), theme=THEME, category=config.KEY_CATEGORY_MAPPING.get(key)))
+
             play_sound(key)
             time.sleep(0.1)
 
