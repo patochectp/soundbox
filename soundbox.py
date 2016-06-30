@@ -55,7 +55,7 @@ def play_sound(key):
             return
         i = random.randrange(0, len(sound_files))
         print('subprocess start')
-        subprocess.Popen(['mplayer', os.path.join(config.SOUND_DIRECTORY, THEME, category, sound_files[i])], stdin=subprocess.PIPE).wait()
+        subprocess.Popen([config.PLAYER, os.path.join(config.SOUND_DIRECTORY, THEME, category, sound_files[i])], stdin=subprocess.PIPE).wait()
         print('subprocess end')
 
 class KeyEventThread(threading.Thread):
