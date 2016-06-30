@@ -3,6 +3,7 @@ import time
 import os
 import random
 import subprocess
+import config
 
 class _Getch:
     """Gets a single character from standard input.  Does not echo to the
@@ -44,17 +45,17 @@ class _GetchWindows:
 getch = _Getch()
 
 def play_sound(key):
-    sound_directory = '/home/pdegeilh/soundbox/sound/'
-    theme = 'theme_reunion_sncf'
-    map_key_sound= {
-        'l' : 'pipotte'
-    }
-    if map_key_sound.get(key):
-        path = os.path.join(sound_directory, theme, map_key_sound[key])
+
+    THEME = 'default'
+    category = config.KEY_CATEGORY_MAPPING.get(key)
+    if category:
+        path = os.path.join(config.SOUND_DIRECTORY, THEME, category)
         sound_files = os.listdir(path)
+        if len(sound_files) == 0:
+            return
         i = random.randrange(0, len(sound_files))
         print('subprocess start')
-        subprocess.Popen(['mplayer', os.path.join(sound_directory, theme, map_key_sound[key], sound_files[i])], stdin=subprocess.PIPE).wait()
+        subprocess.Popen(['mplayer', os.path.join(config.SOUND_DIRECTORY, THEME, category, sound_files[i])], stdin=subprocess.PIPE).wait()
         print('subprocess end')
 
 class KeyEventThread(threading.Thread):
