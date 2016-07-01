@@ -1,6 +1,8 @@
 PLAYER = 'mplayer'
 SOUND_DIRECTORY = '/home/pdegeilh/soundbox/sound/'
-THEME = ['default']
+THEME = {
+    0: 'default',
+    1: 'codir'}
 CATEGORY = ['calotte', 'chut', 'clap_de_fin', 'echec', 'like', 'succes', 'wtf']
 KEY_CATEGORY_MAPPING = {
     34: 'calotte', #3
