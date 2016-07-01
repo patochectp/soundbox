@@ -3,13 +3,13 @@ SOUND_DIRECTORY = '/home/pdegeilh/soundbox/sound/'
 THEME = ['default']
 CATEGORY = ['calotte', 'chut', 'clap_de_fin', 'echec', 'like', 'succes', 'wtf']
 KEY_CATEGORY_MAPPING = {
-    'c': 'calotte',
-    'h': 'chut',
-    'l': 'clap_de_fin',
-    'e': 'echec',
-    'k': 'like',
-    's': 'succes',
-    'w': 'wtf'
+    34: 'calotte', #3
+    45: 'chut',  #6
+    195: 'clap_de_fin', #9
+    61: 'echec',  #+
+    119: 'like', #w
+    118: 'succes', #v
+    44: 'wtf'  #?
 }
 
 

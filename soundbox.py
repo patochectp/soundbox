@@ -48,6 +48,7 @@ THEME = 'default'
 
 def play_sound(key):
     category = config.KEY_CATEGORY_MAPPING.get(key)
+    print(category)
     if category:
         path = os.path.join(config.SOUND_DIRECTORY, THEME, category)
         sound_files = os.listdir(path)
@@ -60,17 +61,17 @@ def play_sound(key):
 
 class KeyEventThread(threading.Thread):
     def run(self):
-        keep_going = True
-        while keep_going:
+        while True:
             key = getch()
-            if key == 'x':
+            print(ord(key))
+            if ord(key) == 120:
                 break
             if config.KEY_CATEGORY_MAPPING.get(key) is None:
                 continue 
 	    with open("stat.csv", "a") as myfile:
     	        myfile.write("{datetime}, {theme}, {category}\n".format(datetime=datetime.datetime.now(), theme=THEME, category=config.KEY_CATEGORY_MAPPING.get(key)))
 
-            play_sound(key)
+            play_sound(ord(key))
             time.sleep(0.1)
 
 kethread = KeyEventThread()
