@@ -40,7 +40,8 @@ def play_sound(key, theme_id):
 
 def handle_event (event):
     global THEME_ID
-    key = event.Ascii
+    key = event.ScanCode
+    print(event.ScanCode)
     if (key == 91) or (key == 66):
         return
     if key == 120:
