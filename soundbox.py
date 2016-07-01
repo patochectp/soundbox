@@ -68,8 +68,8 @@ class KeyEventThread(threading.Thread):
                 break
             if config.KEY_CATEGORY_MAPPING.get(key) is None:
                 continue 
-	    with open("stat.csv", "a") as myfile:
-    	        myfile.write("{datetime}, {theme}, {category}\n".format(datetime=datetime.datetime.now(), theme=THEME, category=config.KEY_CATEGORY_MAPPING.get(key)))
+            with open("stat.csv", "a") as myfile:
+                myfile.write("{datetime}, {theme}, {category}\n".format(datetime=datetime.datetime.now(), theme=THEME, category=config.KEY_CATEGORY_MAPPING.get(key)))
 
             play_sound(ord(key))
             time.sleep(0.1)
