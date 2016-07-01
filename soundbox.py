@@ -1,3 +1,4 @@
+#! /usr/bin/python
 import threading
 import time
 import os
@@ -5,45 +6,9 @@ import random
 import subprocess
 import config
 import datetime
+import sys
+from pyxhook import HookManager
 
-class _Getch:
-    """Gets a single character from standard input.  Does not echo to the
-screen."""
-    def __init__(self):
-        try:
-            self.impl = _GetchWindows()
-        except ImportError:
-            self.impl = _GetchUnix()
-
-    def __call__(self): return self.impl()
-
-
-class _GetchUnix:
-    def __init__(self):
-        import tty, sys
-
-    def __call__(self):
-        import sys, tty, termios
-        fd = sys.stdin.fileno()
-        old_settings = termios.tcgetattr(fd)
-        try:
-            tty.setraw(sys.stdin.fileno())
-            ch = sys.stdin.read(1)
-        finally:
-            termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
-        return ch
-
-
-class _GetchWindows:
-    def __init__(self):
-        import msvcrt
-
-    def __call__(self):
-        import msvcrt
-        return msvcrt.getch()
-
-
-getch = _Getch()
 THEME = 'default'
 
 def play_sound(key):
@@ -59,20 +24,21 @@ def play_sound(key):
         subprocess.Popen([config.PLAYER, os.path.join(config.SOUND_DIRECTORY, THEME, category, sound_files[i])], stdin=subprocess.PIPE).wait()
         print('subprocess end')
 
-class KeyEventThread(threading.Thread):
-    def run(self):
-        while True:
-            key = ord(getch())
-            print(key)
-            if key == 120:
-                break
-            if config.KEY_CATEGORY_MAPPING.get(key) is None:
-                continue 
-            with open("stat.csv", "a") as myfile:
-                myfile.write("{datetime}, {theme}, {category}\n".format(datetime=datetime.datetime.now(), theme=THEME, category=config.KEY_CATEGORY_MAPPING.get(key)))
 
-            play_sound(key)
-            time.sleep(0.1)
 
-kethread = KeyEventThread()
-kethread.start()
+def handle_event (event):
+    key = event.Ascii
+    print(key)
+    if key == 120:
+        sys.exit(0)
+    if config.KEY_CATEGORY_MAPPING.get(key) is None:
+        return
+    with open("stat.csv", "a") as myfile:
+        myfile.write("{datetime}, {theme}, {category}\n".format(datetime=datetime.datetime.now(), theme=THEME, category=config.KEY_CATEGORY_MAPPING.get(key)))
+        play_sound(key)
+
+
+hm = HookManager()
+hm.HookKeyboard()
+hm.KeyUp = handle_event
+hm.start()

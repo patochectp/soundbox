@@ -1,5 +1,5 @@
 PLAYER = 'mplayer'
-SOUND_DIRECTORY = '/home/pdegeilh/soundbox/sound/'
+SOUND_DIRECTORY = '/home/xiaolong/dev/soundbox/sound/'
 THEME = ['default']
 CATEGORY = ['calotte', 'chut', 'clap_de_fin', 'echec', 'like', 'succes', 'wtf']
 KEY_CATEGORY_MAPPING = {
@@ -11,5 +11,3 @@ KEY_CATEGORY_MAPPING = {
     118: 'succes', #v
     44: 'wtf'  #?
 }
-
-
