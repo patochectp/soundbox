@@ -37,6 +37,9 @@ def play_sound(key, theme_id):
     print('subprocess end')
 
 
+def play_start ():
+     subprocess.Popen([config.PLAYER, os.path.join(config.SOUND_DIRECTORY, "Start.mp3")],
+                         stdin=subprocess.PIPE).wait()
 
 def handle_event (event):
     global THEME_ID
@@ -57,9 +60,9 @@ def handle_event (event):
                                                                         key)))
 
     play_sound(key, THEME_ID)
-    time.sleep(0.1)
+    time.sleep(0.5)
 
-
+play_start()
 hm = HookManager()
 hm.HookKeyboard()
 hm.KeyUp = handle_event
