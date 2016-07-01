@@ -9,33 +9,56 @@ import datetime
 import sys
 from pyxhook import HookManager
 
-THEME = 'default'
+THEME_ID = 0
 
-def play_sound(key):
+def play_sound(key, theme_id):
     category = config.KEY_CATEGORY_MAPPING.get(key)
+    theme = config.THEME.get(theme_id % len(config.THEME))
     print(category)
     if category:
-        path = os.path.join(config.SOUND_DIRECTORY, THEME, category)
-        sound_files = os.listdir(path)
-        if len(sound_files) == 0:
-            return
-        i = random.randrange(0, len(sound_files))
-        print('subprocess start')
-        subprocess.Popen([config.PLAYER, os.path.join(config.SOUND_DIRECTORY, THEME, category, sound_files[i])], stdin=subprocess.PIPE).wait()
-        print('subprocess end')
+        path = os.path.join(config.SOUND_DIRECTORY, theme, category)
+    else:
+        path = os.path.join(config.SOUND_DIRECTORY, theme)
+    print(path)
+    if not os.path.exists(path):
+        return
+    sound_files = [f for f in os.listdir(path) if os.path.isfile(os.path.join(path, f))]
+    print(sound_files)
+    if len(sound_files) == 0:
+        return
+    i = random.randrange(0, len(sound_files))
+    print('subprocess start')
+    if category:
+        subprocess.Popen([config.PLAYER, os.path.join(config.SOUND_DIRECTORY, theme, category, sound_files[i])],
+                         stdin=subprocess.PIPE).wait()
+    else:
+        subprocess.Popen([config.PLAYER, os.path.join(config.SOUND_DIRECTORY, theme, sound_files[i])],
+                         stdin=subprocess.PIPE).wait()
+    print('subprocess end')
 
 
 
 def handle_event (event):
+    global THEME_ID
     key = event.Ascii
-    print(key)
+    if (key == 91) or (key == 66):
+        return
     if key == 120:
         sys.exit(0)
-    if config.KEY_CATEGORY_MAPPING.get(key) is None:
+    if key == 27:
+        THEME_ID += 1
+    if config.THEME.get(THEME_ID % len(config.THEME)) is None:
         return
     with open("stat.csv", "a") as myfile:
-        myfile.write("{datetime}, {theme}, {category}\n".format(datetime=datetime.datetime.now(), theme=THEME, category=config.KEY_CATEGORY_MAPPING.get(key)))
-        play_sound(key)
+        if config.KEY_CATEGORY_MAPPING.get(key):
+            myfile.write("{datetime}, {theme}, {category}\n".format(datetime=datetime.datetime.now(),
+                                                                    theme=config.THEME.get(
+                                                                        THEME_ID % len(config.THEME)),
+                                                                    category=config.KEY_CATEGORY_MAPPING.get(
+                                                                        key)))
+
+    play_sound(key, THEME_ID)
+    time.sleep(0.1)
 
 
 hm = HookManager()
