@@ -62,16 +62,16 @@ def play_sound(key):
 class KeyEventThread(threading.Thread):
     def run(self):
         while True:
-            key = getch()
-            print(ord(key))
-            if ord(key) == 120:
+            key = ord(getch())
+            print(key)
+            if key == 120:
                 break
             if config.KEY_CATEGORY_MAPPING.get(key) is None:
                 continue 
             with open("stat.csv", "a") as myfile:
                 myfile.write("{datetime}, {theme}, {category}\n".format(datetime=datetime.datetime.now(), theme=THEME, category=config.KEY_CATEGORY_MAPPING.get(key)))
 
-            play_sound(ord(key))
+            play_sound(key)
             time.sleep(0.1)
 
 kethread = KeyEventThread()
